@@ -9,6 +9,9 @@
 本文Github代码链接 
 https://github.com/AndroidMsky/RandomTextView
 
+作者博客地址：
+http://blog.csdn.net/androidmsky?viewmode=list
+
 先看看掘金的效果：
 
 ![这里写图片描述](http://img.blog.csdn.net/20161102161400896)
@@ -19,7 +22,9 @@ https://github.com/AndroidMsky/RandomTextView
 ![这里写图片描述](http://img.blog.csdn.net/20161103091026709)
 
 
-![这里写图片描述](http://img.blog.csdn.net/20161102161502895)
+
+感觉可以一用，一定要star我哦～
+
 
 接下来介绍一下我的自定义View RandomTextView的用法和原理
 
