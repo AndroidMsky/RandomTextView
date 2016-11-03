@@ -16,6 +16,8 @@ https://github.com/AndroidMsky/RandomTextView
 
 我们自己实现的效果：
 
+![这里写图片描述](http://img.blog.csdn.net/20161103091026709)
+
 
 ![这里写图片描述](http://img.blog.csdn.net/20161102161502895)
 
