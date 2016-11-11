@@ -5,7 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -54,6 +56,10 @@ public class RandomTextView extends TextView {
 
     //基准线
     private int baseline;
+
+    private int measuredHeight;
+
+
 
 
     public RandomTextView(Context context) {
@@ -104,6 +110,8 @@ public class RandomTextView extends TextView {
         pianyiliangSum = new int[list.length];
         overLine = new int[list.length];
         pianyilianglist = list;
+
+
     }
 
 
@@ -115,7 +123,9 @@ public class RandomTextView extends TextView {
             super.onDraw(canvas);
             p = getPaint();
             Paint.FontMetricsInt fontMetrics = p.getFontMetricsInt();
-            baseline = (getMeasuredHeight() - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
+            measuredHeight=getMeasuredHeight();
+            Log.d("EEEEEEE", "onDraw: "+measuredHeight);
+            baseline = (measuredHeight - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
             float[] widths = new float[4];
             p.getTextWidths("9999", widths);
             f0 = widths[0];
@@ -151,15 +161,21 @@ public class RandomTextView extends TextView {
                 }
                 if (overLine[j] == 0)
 
-                    canvas.drawText(setBack(arrayListText.get(j), maxLine - i - 1) + "", 0 + f0 * j,
-                            i * baseline + pianyiliangSum[j], p);
+                    drawText(canvas,setBack(arrayListText.get(j), maxLine - i - 1) + "", 0 + f0 * j,
+                                    i * baseline + pianyiliangSum[j], p);
+
+                    //canvas.drawText(setBack(arrayListText.get(j), maxLine - i - 1) + "", 0 + f0 * j,
+                    //        i * baseline + pianyiliangSum[j], p);
 
                 else {
                     //定位后画一次就好啦
                     if (overLine[j] == 1) {
                         overLine[j]++;
-                        canvas.drawText(arrayListText.get(j) + "", 0 + f0 * j,
-                                baseline, p);
+
+                        drawText(canvas,arrayListText.get(j) + "", 0 + f0 * j,
+                                        baseline, p);
+                       // canvas.drawText(arrayListText.get(j) + "", 0 + f0 * j,
+                        //        baseline, p);
                     }
 
                     //break;
@@ -241,6 +257,16 @@ public class RandomTextView extends TextView {
 
         }
     };
+
+
+    private void drawText(Canvas mCanvas,String text,float x,float y,Paint p){
+
+        if (y>=-measuredHeight&&y<=2*measuredHeight)
+
+        mCanvas.drawText(text + "", x,
+                y, p);
+        else return;
+    }
 
 
 }
