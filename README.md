@@ -9,8 +9,8 @@
 
 于是决定把它通过自定义View编写出来，方便自己和大家调用。
 
-本文Github代码链接 
-https://github.com/AndroidMsky/RandomTextView
+原文链接 
+http://blog.csdn.net/androidmsky/article/details/53009886 
 
 作者博客地址：
 http://blog.csdn.net/androidmsky?viewmode=list
