@@ -96,7 +96,7 @@ public class RandomTextView extends TextView {
                 break;
             case ALL:
                 for (int i = 0; i < text.length(); i++) {
-                    pianyilianglist[i] = 5;
+                    pianyilianglist[i] = 15;
                 }
 
                 break;
