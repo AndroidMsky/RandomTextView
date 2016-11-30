@@ -9,8 +9,8 @@
 
 于是决定把它通过自定义View编写出来，方便自己和大家调用。
 
-本文Github代码链接 
-https://github.com/AndroidMsky/RandomTextView
+原文链接 
+http://blog.csdn.net/androidmsky/article/details/53009886 
 
 作者博客地址：
 http://blog.csdn.net/androidmsky?viewmode=list
@@ -30,6 +30,9 @@ http://blog.csdn.net/androidmsky?viewmode=list
 
 
 接下来介绍一下我的自定义View RandomTextView的用法和原理
+
+2016年11月11号，RandomTextView第一次更新为v1.1版本吧。
+(解决了这样一个场景，一个抽奖的页面想滚动30秒，可能maxline加到100行的数字滚动，对此我要对性能进行优化避免过度绘制,在本文最后做出解释)
 
 用法
 --
@@ -330,6 +333,42 @@ private final Runnable task = new Runnable() {
 
     }
 ```
+
+
+v1.1更新内容：
+
+之前我们的思路是按照maxLine画出每一行，但是我们最多看见2行内容，这样是不科学的，完全中了过度绘制的圈套呀，再想如下一个场景，一个抽奖的页面想滚动30秒，可能maxline加到100行的数字滚动，那每帧都要绘制100行的text这显然会出现性能问题，造成掉帧的影响，所以我们队drawtext方法进行一下拦截，新建一个drawText方法：
+
+```
+private void drawText(Canvas mCanvas,String text,float x,float y,Paint p){
+
+        if (y>=-measuredHeight&&y<=2*measuredHeight)
+
+        mCanvas.drawText(text + "", x,
+                y, p);
+        else return;
+    }
+```
+我们对y坐标进行判断，如果在textView上下各一个textView大小内，我们进行绘制，如果超出这个范围我们直接return，不做任何处理，这样既不影响我们的绘制逻辑又解决了过渡绘制问题。
+讲原来的drawText方法替换：
+
+```
+ drawText(canvas,arrayListText.get(j) + "", 0 + f0 * j,
+                                        baseline, p);
+                       // canvas.drawText(arrayListText.get(j) + "", 0 + f0 * j,
+                        //        baseline, p);
+```
+作者将持续维护该框架，也希望大家star，fork，issue。
+
+共同做出一个更好的RandomTextView
+
+	2016.11.11 Androidmsky
+
+
+
+
+
+
 绘制原理的逻辑就讲完啦，RandomTextView可以投入使用啦，自定义view并不难，只要你知道安卓API能让你能干什么，你想干什么，你可能马上就知道你应该怎么做啦。
 
 欢迎关注作者。欢迎评论讨论。欢迎拍砖。 
