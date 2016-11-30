@@ -1,38 +1,38 @@
-# RandomTextView
-滚动显示TextView的数字,支持自定义每个字符速度。
+	本文已经在微信公众号【Android群英传】独家发表。
+	
 
-感觉可以一用，一定要顺手star我哦～
+未经允许不得转载。
+转载请注明作者AndroidMsky及原文链接
+http://blog.csdn.net/androidmsky/article/details/53009886
+本文Github代码链接 
+https://github.com/AndroidMsky/RandomTextView
 
-  最近在掘金这个干货平台上发了几篇博文，[这里进入我的掘金主页](http://gold.xitu.io/user/580f1397da2f60004f422d18)。
+2016年11-30号，一位热心同学私信我反映会出现内存泄漏问题。特别推出v1.2检测并且，解决内存泄漏问题，并讲述一下，看过本文的直接点传送门。
 
-看掘金APP中文章数据的数字滚动起来很动感，效果很棒，
+[2.v1.2更新内容](#2)
 
-于是决定把它通过自定义View编写出来，方便自己和大家调用。
+Github代码已经更新为v1.2
 
-原文链接 
-http://blog.csdn.net/androidmsky/article/details/53009886 
 
-作者博客地址：
-http://blog.csdn.net/androidmsky?viewmode=list
+2016年11月11号，RandomTextView第一次更新为v1.1版本吧。
+(解决了这样一个场景，一个抽奖的页面想滚动30秒，可能maxline加到100行的数字滚动，对此我要对性能进行优化避免过度绘制,在本文最后做出解释)
 
-先看看掘金的效果：
+Github代码已经更新为v1.1
+
+
+[1.v1.1更新内容](#1)
+
+先看看X金APP的效果：
 
 ![这里写图片描述](http://img.blog.csdn.net/20161102161400896)
 
 
 我们自己实现的效果：
 
-![这里写图片描述](http://img.blog.csdn.net/20161103091026709)
 
-
-
-感觉可以一用，一定要star我哦～
-
+![这里写图片描述](http://img.blog.csdn.net/20161102161502895)
 
 接下来介绍一下我的自定义View RandomTextView的用法和原理
-
-2016年11月11号，RandomTextView第一次更新为v1.1版本吧。
-(解决了这样一个场景，一个抽奖的页面想滚动30秒，可能maxline加到100行的数字滚动，对此我要对性能进行优化避免过度绘制,在本文最后做出解释)
 
 用法
 --
@@ -97,10 +97,18 @@ mRandomTextView.setText("909878");
 ```
 mRandomTextView.setMaxLine(20);
 ```
+放置泄漏
+```
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRandomTextView.destroy();
+    }
+```
 
 原理
 --
-用TextView去绘制10（maxLine可设置）行文字，调用canvas.drawText去绘制出来，在绘制的Y坐标不断增加便宜量，去改变绘制的高度，通过handler.postDelayed(this, 20);不断增加便宜量，并且不断判断所有位数字最后一行绘制完毕的时候，结束handler的循环调用。
+用TextView去绘制10（maxLine可设置）行文字，调用canvas.drawText去绘制出来，在绘制的Y坐标不断增加便宜量，去改变绘制的高度，通过handler.postDelayed(this, 20);不断增加偏移量，并且不断判断所有位数字最后一行绘制完毕的时候，结束handler的循环调用。
 
 需要的变量：
 
@@ -167,7 +175,7 @@ OnDraw方法：
         drawNumber(canvas);
 
 ```
-自一次进入onDraw方法时，做了如下几件事情：
+第一次进入onDraw方法时，做了如下几件事情：
 **1.**去获取当前正确的画笔p = getPaint();从而保证xml中配置的大小颜色等有效。
 **2.**通过当前画笔去计算正确的drawText基准线。
             baseline = (getMeasuredHeight() - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
@@ -333,8 +341,65 @@ private final Runnable task = new Runnable() {
 
     }
 ```
+<h2 id="2">v1.2更新内容</h2>
+v1.2更新内容：
+解决内存泄漏问题，
+看到泄可能有点手抖，不过面对现实。
+上图：
+
+![这里写图片描述](http://img.blog.csdn.net/20161130174054510)
+
+如果反复选择屏幕让Activty重新创建，就会出现内存泄漏，安利给大家内存泄漏检测工具：leakcanary：https://github.com/square/leakcanary
+配置十分简单先是引用：（2016.11.30版本）
+
+```
+ debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+```
+然后：
+
+```
+public class MyApplication extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+    }
+}
+
+```
+如果检测activity的泄漏问题，可以开启旋转屏幕一旋转就重新创建activity了，这样就反反复复创建activity。如上图泄漏问题就会被推送出来，而且明确告诉你是什么样一个引用链导致的泄漏。工具很强大有么有。本文框架的问题就是，如果RandomTextview的动画没有停止，那么activity就不会被释放掉，这样就造成了泄漏，所以在activity中写入：
+
+```
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRandomTextView.destroy();
+    }
+```
+并且提供destroy方法：
+
+```
+ public void destroy (){
+        auto=false;
+        handler.removeCallbacks(task);
+
+    }
+```
+
+欢迎大家提出各种问题，让控件越来越好用谢谢。
+	2016.11.30 Androidmsky
 
 
+<h2 id="1">v1.1更新内容</h2>
 v1.1更新内容：
 
 之前我们的思路是按照maxLine画出每一行，但是我们最多看见2行内容，这样是不科学的，完全中了过度绘制的圈套呀，再想如下一个场景，一个抽奖的页面想滚动30秒，可能maxline加到100行的数字滚动，那每帧都要绘制100行的text这显然会出现性能问题，造成掉帧的影响，所以我们队drawtext方法进行一下拦截，新建一个drawText方法：
@@ -366,8 +431,16 @@ private void drawText(Canvas mCanvas,String text,float x,float y,Paint p){
 
 
 
+回顾
+--
 
+在自定义view的时候如果你的view是像本文一样，循环去绘制不断刷新的话，就意味着onDraw方法会随着你view的帧数不断的被调用，一秒可能被执行几十次，所以写在这里的方法，一定要小心为妙，比如一些无需每次都初始化的变量切记不可以定义在onDraw方法里，比如本文的getText();方法去获取当前TextView的内容，就要写在外面。但是可能有些方法你必须在super.onDraw(canvas)，以后才可以获取的比如getPaint();那么我们就可以加个布尔值firstIn来控制只有第一次进入onDraw方法才去执行，或者其它的只做一次的事情都可以这样去控制。
 
+循环绘制动画效果我们一定要理清两条线，一条是每一帧绘制什么，另一条是动画结束你都绘制了什么。
+
+第一条线应该注意你绘制的只是一个瞬间，是个不断重复执行的线。
+
+第二条线就是无数个第一条线加上时间点共同组成的，主要就是控制每次的不同，比如本文中增加的偏移量，是数据（本文中每一个字符的坐标）的变化，去影响onDraw方法，绘制出不通的东西呈现在屏幕上。第二条线还要控制好什么时候结束所有的第一条线，也就是整个动画结束的条件，本文中的例子讲是一旦所有字符的最后一行都超过或者等于TextView的基准线，那么整个动画结束。
 
 绘制原理的逻辑就讲完啦，RandomTextView可以投入使用啦，自定义view并不难，只要你知道安卓API能让你能干什么，你想干什么，你可能马上就知道你应该怎么做啦。
 
@@ -387,3 +460,20 @@ https://github.com/AndroidMsky/RandomTextView
 
 
 博主原创未经允许不许转载。
+
+
+
+—————————————————————————————
+
+作者推荐：
+
+安卓自定义view滚动数据显示
+http://blog.csdn.net/androidmsky/article/details/53009886
+RecyclerView下拉刷新分页加载性能优化和Gilde配合加载三部曲
+http://blog.csdn.net/androidmsky/article/details/53115818
+打造企业级网络请求框架集合retrofit＋gson＋mvp
+http://blog.csdn.net/androidmsky/article/details/52882722
+安卓手机自动接起QQ视频秒变摄像头
+http://blog.csdn.net/androidmsky/article/details/53066441
+
+—————————————————————————————
