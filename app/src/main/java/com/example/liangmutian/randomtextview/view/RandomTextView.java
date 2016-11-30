@@ -96,7 +96,7 @@ public class RandomTextView extends TextView {
                 break;
             case ALL:
                 for (int i = 0; i < text.length(); i++) {
-                    pianyilianglist[i] = 15;
+                    pianyilianglist[i] = 5;
                 }
 
                 break;
@@ -240,6 +240,11 @@ public class RandomTextView extends TextView {
 
 
     private static final Handler handler = new Handler();
+    public void destroy (){
+        auto=false;
+        handler.removeCallbacks(task);
+
+    }
 
     private final Runnable task = new Runnable() {
 
@@ -267,6 +272,7 @@ public class RandomTextView extends TextView {
                 y, p);
         else return;
     }
+
 
 
 }
