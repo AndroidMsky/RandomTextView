@@ -1,38 +1,38 @@
-# RandomTextView
-滚动显示TextView的数字,支持自定义每个字符速度。
+	本文已经在微信公众号【Android群英传】独家发表。
+	
 
-感觉可以一用，一定要顺手star我哦～
+未经允许不得转载。
+转载请注明作者AndroidMsky及原文链接
+http://blog.csdn.net/androidmsky/article/details/53009886
+本文Github代码链接 
+https://github.com/AndroidMsky/RandomTextView
 
-  最近在掘金这个干货平台上发了几篇博文，[这里进入我的掘金主页](http://gold.xitu.io/user/580f1397da2f60004f422d18)。
+2016年11-30号，一位热心同学私信我反映会出现内存泄漏问题。特别推出v1.2检测并且，解决内存泄漏问题，并讲述一下，看过本文的直接点传送门。
 
-看掘金APP中文章数据的数字滚动起来很动感，效果很棒，
+[2.v1.2更新内容](#2)
 
-于是决定把它通过自定义View编写出来，方便自己和大家调用。
+Github代码已经更新为v1.2
 
-原文链接 
-http://blog.csdn.net/androidmsky/article/details/53009886 
 
-作者博客地址：
-http://blog.csdn.net/androidmsky?viewmode=list
+2016年11月11号，RandomTextView第一次更新为v1.1版本吧。
+(解决了这样一个场景，一个抽奖的页面想滚动30秒，可能maxline加到100行的数字滚动，对此我要对性能进行优化避免过度绘制,在本文最后做出解释)
 
-先看看掘金的效果：
+Github代码已经更新为v1.1
+
+
+[1.v1.1更新内容](#1)
+
+先看看X金APP的效果：
 
 ![这里写图片描述](http://img.blog.csdn.net/20161102161400896)
 
 
 我们自己实现的效果：
 
-![这里写图片描述](http://img.blog.csdn.net/20161103091026709)
 
-
-
-感觉可以一用，一定要star我哦～
-
+![这里写图片描述](http://img.blog.csdn.net/20161102161502895)
 
 接下来介绍一下我的自定义View RandomTextView的用法和原理
-
-2016年11月11号，RandomTextView第一次更新为v1.1版本吧。
-(解决了这样一个场景，一个抽奖的页面想滚动30秒，可能maxline加到100行的数字滚动，对此我要对性能进行优化避免过度绘制,在本文最后做出解释)
 
 用法
 --
@@ -97,10 +97,18 @@ mRandomTextView.setText("909878");
 ```
 mRandomTextView.setMaxLine(20);
 ```
+放置泄漏
+```
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRandomTextView.destroy();
+    }
+```
 
 原理
 --
-用TextView去绘制10（maxLine可设置）行文字，调用canvas.drawText去绘制出来，在绘制的Y坐标不断增加便宜量，去改变绘制的高度，通过handler.postDelayed(this, 20);不断增加便宜量，并且不断判断所有位数字最后一行绘制完毕的时候，结束handler的循环调用。
+用TextView去绘制10（maxLine可设置）行文字，调用canvas.drawText去绘制出来，在绘制的Y坐标不断增加便宜量，去改变绘制的高度，通过handler.postDelayed(this, 20);不断增加偏移量，并且不断判断所有位数字最后一行绘制完毕的时候，结束handler的循环调用。
 
 需要的变量：
 
@@ -167,7 +175,7 @@ OnDraw方法：
         drawNumber(canvas);
 
 ```
-自一次进入onDraw方法时，做了如下几件事情：
+第一次进入onDraw方法时，做了如下几件事情：
 **1.**去获取当前正确的画笔p = getPaint();从而保证xml中配置的大小颜色等有效。
 **2.**通过当前画笔去计算正确的drawText基准线。
             baseline = (getMeasuredHeight() - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
@@ -333,57 +341,76 @@ private final Runnable task = new Runnable() {
 
     }
 ```
+<h2 id="2">v1.2更新内容</h2>
+v1.2更新内容：
+解决内存泄漏问题，
+看到泄可能有点手抖，不过面对现实。
+上图：
 
+![这里写图片描述](http://img.blog.csdn.net/20161130174054510)
 
-v1.1更新内容：
-
-之前我们的思路是按照maxLine画出每一行，但是我们最多看见2行内容，这样是不科学的，完全中了过度绘制的圈套呀，再想如下一个场景，一个抽奖的页面想滚动30秒，可能maxline加到100行的数字滚动，那每帧都要绘制100行的text这显然会出现性能问题，造成掉帧的影响，所以我们队drawtext方法进行一下拦截，新建一个drawText方法：
+如果反复选择屏幕让Activty重新创建，就会出现内存泄漏，安利给大家内存泄漏检测工具：leakcanary：https://github.com/square/leakcanary
+配置十分简单先是引用：（2016.11.30版本）
 
 ```
-private void drawText(Canvas mCanvas,String text,float x,float y,Paint p){
+ debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+```
+然后：
 
-        if (y>=-measuredHeight&&y<=2*measuredHeight)
+```
+public class MyApplication extends Application {
 
-        mCanvas.drawText(text + "", x,
-                y, p);
-        else return;
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+    }
+}
+
+```
+如果检测activity的泄漏问题，可以开启旋转屏幕一旋转就重新创建activity了，这样就反反复复创建activity。如上图泄漏问题就会被推送出来，而且明确告诉你是什么样一个引用链导致的泄漏。工具很强大有么有。本文框架的问题就是，如果RandomTextview的动画没有停止，那么activity就不会被释放掉，这样就造成了泄漏，所以在activity中写入：
+
+```
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRandomTextView.destroy();
     }
 ```
-我们对y坐标进行判断，如果在textView上下各一个textView大小内，我们进行绘制，如果超出这个范围我们直接return，不做任何处理，这样既不影响我们的绘制逻辑又解决了过渡绘制问题。
-讲原来的drawText方法替换：
+并且提供destroy方法：
 
 ```
- drawText(canvas,arrayListText.get(j) + "", 0 + f0 * j,
-                                        baseline, p);
-                       // canvas.drawText(arrayListText.get(j) + "", 0 + f0 * j,
-                        //        baseline, p);
+ public void destroy (){
+        auto=false;
+        handler.removeCallbacks(task);
+
+    }
 ```
-作者将持续维护该框架，也希望大家star，fork，issue。
 
-共同做出一个更好的RandomTextView
+欢迎大家提出各种问题，让控件越来越好用谢谢。
+	2016.11.30 Androidmsky
+## License
 
-	2016.11.11 Androidmsky
+    Copyright 2016 AndroidMsky
 
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
+       http://www.apache.org/licenses/LICENSE-2.0
 
-
-
-
-绘制原理的逻辑就讲完啦，RandomTextView可以投入使用啦，自定义view并不难，只要你知道安卓API能让你能干什么，你想干什么，你可能马上就知道你应该怎么做啦。
-
-欢迎关注作者。欢迎评论讨论。欢迎拍砖。 
-
-如果觉得这篇文章对你有帮助 欢迎打赏，
-
-欢迎star，Fork我的github。
-
-喜欢作者的也可以Follow。也算对作者的一种支持。 
-本文Github代码链接 
-https://github.com/AndroidMsky/RandomTextView
-
-欢迎加作者自营安卓开发交流群：308372687
-![这里写图片描述](http://img.blog.csdn.net/20161028111556438)
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 
 
-
-博主原创未经允许不许转载。
