@@ -59,13 +59,6 @@ Step 2. Add the dependency
 只有200行绝对轻量方便。
 
 xml中定义：
-考入
-
-[RandomTextView.java](https://github.com/AndroidMsky/RandomTextView/tree/master/app/src/main/java/com/example/liangmutian/randomtextview/view)
-
-只有200行绝对轻量方便。
-
-xml中定义：
 
 ```
 <com.example.liangmutian.randomtextview.view.RandomTextView
