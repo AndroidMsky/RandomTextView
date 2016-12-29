@@ -3,6 +3,7 @@
 
 转载请注明作者AndroidMsky及原文链接
 http://blog.csdn.net/androidmsky/article/details/53009886
+
 本文Github代码链接 
 https://github.com/AndroidMsky/RandomTextView
 
