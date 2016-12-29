@@ -2,12 +2,15 @@
 	
 
 转载请注明作者AndroidMsky及原文链接
+
 http://blog.csdn.net/androidmsky/article/details/53009886
 
 本文Github代码链接 
+
 https://github.com/AndroidMsky/RandomTextView
 
 2016年11-30号，解决内存泄漏问题
+
 [2.v1.2更新内容](#2)
 
 2016年11月11号，RandomTextView第一次更新为v1.1版本吧。
