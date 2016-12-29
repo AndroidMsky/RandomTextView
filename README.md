@@ -1,18 +1,13 @@
 	本文已经在微信公众号【Android群英传】独家发表。
 	
 
-未经允许不得转载。
 转载请注明作者AndroidMsky及原文链接
 http://blog.csdn.net/androidmsky/article/details/53009886
 本文Github代码链接 
 https://github.com/AndroidMsky/RandomTextView
 
-2016年11-30号，一位热心同学私信我反映会出现内存泄漏问题。特别推出v1.2检测并且，解决内存泄漏问题，并讲述一下，看过本文的直接点传送门。
-
+2016年11-30号，解决内存泄漏问题
 [2.v1.2更新内容](#2)
-
-Github代码已经更新为v1.2
-
 
 2016年11月11号，RandomTextView第一次更新为v1.1版本吧。
 (解决了这样一个场景，一个抽奖的页面想滚动30秒，可能maxline加到100行的数字滚动，对此我要对性能进行优化避免过度绘制,在本文最后做出解释)
@@ -36,6 +31,30 @@ Github代码已经更新为v1.1
 
 用法
 --
+1.仓库
+```
+Add it in your root build.gradle at the end of repositories:
+
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+Step 2. Add the dependency
+
+	dependencies {
+	        compile 'com.github.AndroidMsky:RandomTextView:v1.2.2'
+	}
+```
+
+2.考入
+
+[RandomTextView.java](https://github.com/AndroidMsky/RandomTextView/tree/master/app/src/main/java/com/example/liangmutian/randomtextview/view)
+
+只有200行绝对轻量方便。
+
+xml中定义：
 考入
 
 [RandomTextView.java](https://github.com/AndroidMsky/RandomTextView/tree/master/app/src/main/java/com/example/liangmutian/randomtextview/view)
@@ -97,7 +116,7 @@ mRandomTextView.setText("909878");
 ```
 mRandomTextView.setMaxLine(20);
 ```
-放置泄漏
+防止泄漏
 ```
     @Override
     protected void onDestroy() {
@@ -105,6 +124,14 @@ mRandomTextView.setMaxLine(20);
         mRandomTextView.destroy();
     }
 ```
+
+
+
+
+
+
+
+
 
 原理
 --
