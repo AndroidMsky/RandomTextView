@@ -1,15 +1,13 @@
 package com.example.liangmutian.randomtextview;
 
-import android.support.v7.app.AppCompatActivity;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.liangmutian.randomtextview.view.RandomTextView;
+import com.example.liangmutian.randomtextviewlibrary.RandomTextView;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private RandomTextView mRandomTextView;
     private int[] pianyiliang = new int[6];

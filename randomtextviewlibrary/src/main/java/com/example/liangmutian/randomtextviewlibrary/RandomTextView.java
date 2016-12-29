@@ -1,4 +1,4 @@
-package com.example.liangmutian.randomtextview.view;
+package com.example.liangmutian.randomtextviewlibrary;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
