@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
     }
 
     public void start2(View v) {
-        mRandomTextView.setText("909878");
+        mRandomTextView.setText("912111");
         pianyiliang[0] = 7;
         pianyiliang[1] = 6;
         pianyiliang[2] = 12;

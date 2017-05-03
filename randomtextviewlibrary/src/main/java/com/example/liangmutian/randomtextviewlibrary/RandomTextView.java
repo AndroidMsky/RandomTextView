@@ -59,8 +59,6 @@ public class RandomTextView extends TextView {
     private int measuredHeight;
 
 
-
-
     public RandomTextView(Context context) {
         super(context);
     }
@@ -122,8 +120,8 @@ public class RandomTextView extends TextView {
             super.onDraw(canvas);
             p = getPaint();
             Paint.FontMetricsInt fontMetrics = p.getFontMetricsInt();
-            measuredHeight=getMeasuredHeight();
-            Log.d("EEEEEEE", "onDraw: "+measuredHeight);
+            measuredHeight = getMeasuredHeight();
+            Log.d("EEEEEEE", "onDraw: " + measuredHeight);
             baseline = (measuredHeight - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
             float[] widths = new float[4];
             p.getTextWidths("9999", widths);
@@ -131,8 +129,17 @@ public class RandomTextView extends TextView {
             invalidate();
         }
         drawNumber(canvas);
+//        if (auto) {
+//            for (int j = 0; j < numLength; j++) {
+//
+//                pianyiliangSum[j] -= pianyilianglist[j];
+//                postInvalidateDelayed(17);
+//            }
 
+
+   //     }
     }
+
 
     //绘制
     private void drawNumber(Canvas canvas) {
@@ -160,8 +167,8 @@ public class RandomTextView extends TextView {
                 }
                 if (overLine[j] == 0)
 
-                    drawText(canvas,setBack(arrayListText.get(j), maxLine - i - 1) + "", 0 + f0 * j,
-                                    i * baseline + pianyiliangSum[j], p);
+                    drawText(canvas, setBack(arrayListText.get(j), maxLine - i - 1) + "", 0 + f0 * j,
+                            i * baseline + pianyiliangSum[j], p);
 
                     //canvas.drawText(setBack(arrayListText.get(j), maxLine - i - 1) + "", 0 + f0 * j,
                     //        i * baseline + pianyiliangSum[j], p);
@@ -171,9 +178,9 @@ public class RandomTextView extends TextView {
                     if (overLine[j] == 1) {
                         overLine[j]++;
 
-                        drawText(canvas,arrayListText.get(j) + "", 0 + f0 * j,
-                                        baseline, p);
-                       // canvas.drawText(arrayListText.get(j) + "", 0 + f0 * j,
+                        drawText(canvas, arrayListText.get(j) + "", 0 + f0 * j,
+                                baseline, p);
+                        // canvas.drawText(arrayListText.get(j) + "", 0 + f0 * j,
                         //        baseline, p);
                     }
 
@@ -239,8 +246,9 @@ public class RandomTextView extends TextView {
 
 
     private static final Handler handler = new Handler();
-    public void destroy (){
-        auto=false;
+
+    public void destroy() {
+        auto = false;
         handler.removeCallbacks(task);
 
     }
@@ -256,6 +264,7 @@ public class RandomTextView extends TextView {
                     pianyiliangSum[j] -= pianyilianglist[j];
 
                 }
+
                 invalidate();
             }
 
@@ -263,15 +272,14 @@ public class RandomTextView extends TextView {
     };
 
 
-    private void drawText(Canvas mCanvas,String text,float x,float y,Paint p){
+    private void drawText(Canvas mCanvas, String text, float x, float y, Paint p) {
 
-        if (y>=-measuredHeight&&y<=2*measuredHeight)
+        if (y >= -measuredHeight && y <= 2 * measuredHeight)
 
-        mCanvas.drawText(text + "", x,
-                y, p);
+            mCanvas.drawText(text + "", x,
+                    y, p);
         else return;
     }
-
 
 
 }
