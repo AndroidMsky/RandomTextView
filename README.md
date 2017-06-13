@@ -9,8 +9,16 @@ http://blog.csdn.net/androidmsky/article/details/53009886
 
 https://github.com/AndroidMsky/RandomTextView
 
-2016年11-30号，解决内存泄漏问题
+2016年11-30号，解决内存泄漏问题 （v1.3已经没有此问题）
 
+2017年6月13日，我们加入了对view状态的监听。Activity退出,view自动销毁。不用重写onestroy了
+```
+ @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        destroy();
+    }
+```
 [2.v1.2更新内容](#2)
 
 2016年11月11号，RandomTextView第一次更新为v1.1版本吧。
@@ -113,7 +121,7 @@ mRandomTextView.setText("909878");
 ```
 mRandomTextView.setMaxLine(20);
 ```
-防止泄漏
+防止泄漏（最新版本不用写此方法了）
 ```
     @Override
     protected void onDestroy() {
@@ -368,59 +376,9 @@ private final Runnable task = new Runnable() {
 <h2 id="2">v1.2更新内容</h2>
 v1.2更新内容：
 解决内存泄漏问题，
-看到泄可能有点手抖，不过面对现实。
-上图：
-
-![这里写图片描述](http://img.blog.csdn.net/20161130174054510)
-
-如果反复选择屏幕让Activty重新创建，就会出现内存泄漏，安利给大家内存泄漏检测工具：leakcanary：https://github.com/square/leakcanary
-配置十分简单先是引用：（2016.11.30版本）
-
-```
- debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-```
-然后：
-
-```
-public class MyApplication extends Application {
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install(this);
-    }
-}
-
-```
-如果检测activity的泄漏问题，可以开启旋转屏幕一旋转就重新创建activity了，这样就反反复复创建activity。如上图泄漏问题就会被推送出来，而且明确告诉你是什么样一个引用链导致的泄漏。工具很强大有么有。本文框架的问题就是，如果RandomTextview的动画没有停止，那么activity就不会被释放掉，这样就造成了泄漏，所以在activity中写入：
-
-```
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mRandomTextView.destroy();
-    }
-```
-并且提供destroy方法：
-
-```
- public void destroy (){
-        auto=false;
-        handler.removeCallbacks(task);
-
-    }
-```
 
 欢迎大家提出各种问题，让控件越来越好用谢谢。
-	2016.11.30 Androidmsky
+	2017.6.13 Androidmsky
 ## License
 
     Copyright 2016 AndroidMsky
