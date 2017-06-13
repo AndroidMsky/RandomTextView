@@ -54,7 +54,7 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 
 	dependencies {
-	        compile 'com.github.AndroidMsky:RandomTextView:v1.2.2'
+	        compile 'com.github.AndroidMsky:RandomTextView:v1.3'
 	}
 ```
 
