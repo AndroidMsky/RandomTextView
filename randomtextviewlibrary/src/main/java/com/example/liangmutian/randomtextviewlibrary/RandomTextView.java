@@ -272,6 +272,12 @@ public class RandomTextView extends TextView {
     };
 
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        destroy();
+    }
+
     private void drawText(Canvas mCanvas, String text, float x, float y, Paint p) {
 
         if (y >= -measuredHeight && y <= 2 * measuredHeight)
