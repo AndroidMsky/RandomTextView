@@ -6,17 +6,20 @@ http://blog.csdn.net/androidmsky/article/details/53009886
 本文Github代码链接 
 
 https://github.com/AndroidMsky/RandomTextView
+2017年11-6号
 
-2016年11-30号，解决内存泄漏问题 （v1.3已经没有此问题）
+[2.v1.4更新内容](#2)
+
+重复绘制优化
+
+2016年11-30号
+
+[2.v1.3更新内容](#2)
+
+自动管理view生命周期，不会出现泄漏问题。
 
 2017年6月13日，我们加入了对view状态的监听。Activity退出,view自动销毁。不用重写onestroy了
-```
- @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        destroy();
-    }
-```
+
 [2.v1.2更新内容](#2)
 
 2016年11月11号，RandomTextView第一次更新为v1.1版本吧。
