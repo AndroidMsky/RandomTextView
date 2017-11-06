@@ -1,5 +1,6 @@
 package com.example.liangmutian.randomtextviewlibrary;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
  * Created by lmt on 16/11/1.
  */
 
+@SuppressLint("AppCompatCustomView")
 public class RandomTextView extends TextView {
     //高位快
     public static final int FIRSTF_FIRST = 0;
@@ -115,6 +117,7 @@ public class RandomTextView extends TextView {
     @Override
     protected void onDraw(Canvas canvas) {
 
+        Log.d("RandomTextView","draw");
         if (firstIn) {
             firstIn = false;
             super.onDraw(canvas);
@@ -159,9 +162,12 @@ public class RandomTextView extends TextView {
                         auto += overLine[k];
                     }
                     if (auto == numLength * 2 - 1) {
-                        this.auto = false;
+
                         handler.removeCallbacks(task);
+                        //修复停止后绘制问题
+                        if (this.auto)
                         invalidate();
+                        this.auto = false;
                     }
 
                 }
@@ -258,6 +264,7 @@ public class RandomTextView extends TextView {
         public void run() {
             // TODO Auto-generated method stub
             if (auto) {
+                Log.d("RandomTextView",""+auto);
                 handler.postDelayed(this, 20);
 
                 for (int j = 0; j < numLength; j++) {
