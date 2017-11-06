@@ -8,19 +8,19 @@ http://blog.csdn.net/androidmsky/article/details/53009886
 https://github.com/AndroidMsky/RandomTextView
 2017年11-6号
 
-[2.v1.4更新内容](#2)
+v1.4更新内容
 
 重复绘制优化
 
 2016年11-30号
 
-[2.v1.3更新内容](#2)
+v1.3更新内容
 
 自动管理view生命周期，不会出现泄漏问题。
 
-2017年6月13日，我们加入了对view状态的监听。Activity退出,view自动销毁。不用重写onestroy了
+v1.2更新内容
 
-[2.v1.2更新内容](#2)
+效果优化，避免过度绘制
 
 2016年11月11号，RandomTextView第一次更新为v1.1版本吧。
 (解决了这样一个场景，一个抽奖的页面想滚动30秒，可能maxline加到100行的数字滚动，对此我要对性能进行优化避免过度绘制,在本文最后做出解释)
@@ -374,9 +374,8 @@ private final Runnable task = new Runnable() {
 
     }
 ```
-<h2 id="2">v1.2更新内容</h2>
-v1.2更新内容：
-解决内存泄漏问题，
+
+
 
 欢迎大家提出各种问题，让控件越来越好用谢谢。
 	2017.6.13 Androidmsky
