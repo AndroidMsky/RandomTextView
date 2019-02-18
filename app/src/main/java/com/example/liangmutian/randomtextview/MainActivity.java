@@ -48,6 +48,7 @@ public class MainActivity extends Activity {
 
     }
 
+//    start
     public void start3(View v) {
         mRandomTextView.setText("9078111123");
         mRandomTextView.setPianyilian(RandomTextView.FIRSTF_LAST);
