@@ -132,7 +132,7 @@ public class RandomTextView extends TextView {
             invalidate();
         }
         drawNumber(canvas);
-//        if (auto) {
+//        if (auto) {1
 //            for (int j = 0; j < numLength; j++) {
 //
 //                pianyiliangSum[j] -= pianyilianglist[j];
