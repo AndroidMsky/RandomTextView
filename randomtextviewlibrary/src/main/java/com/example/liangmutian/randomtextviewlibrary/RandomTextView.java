@@ -132,15 +132,7 @@ public class RandomTextView extends TextView {
             invalidate();
         }
         drawNumber(canvas);
-//        if (auto) {1
-//            for (int j = 0; j < numLength; j++) {
-//
-//                pianyiliangSum[j] -= pianyilianglist[j];
-//                postInvalidateDelayed(17);
-//            }
 
-
-   //     }
     }
 
 
@@ -163,7 +155,7 @@ public class RandomTextView extends TextView {
                     }
                     if (auto == numLength * 2 - 1) {
 
-                        handler.removeCallbacks(task);
+                        removeCallbacks(task);
                         //修复停止后绘制问题
                         if (this.auto)
                         invalidate();
@@ -222,8 +214,7 @@ public class RandomTextView extends TextView {
 
         arrayListText = getList(text);
 
-        handler.postDelayed(task, 17);
-
+        postDelayed(task, 17);
         auto = true;
 
     }
@@ -248,14 +239,14 @@ public class RandomTextView extends TextView {
 
     }
 
-    ;
 
 
-    private static final Handler handler = new Handler();
+
 
     public void destroy() {
         auto = false;
-        handler.removeCallbacks(task);
+        removeCallbacks(task);
+
 
     }
 
@@ -265,7 +256,7 @@ public class RandomTextView extends TextView {
             // TODO Auto-generated method stub
             if (auto) {
                 Log.d("RandomTextView",""+auto);
-                handler.postDelayed(this, 20);
+                postDelayed(this, 20);
 
                 for (int j = 0; j < numLength; j++) {
                     pianyiliangSum[j] -= pianyilianglist[j];
