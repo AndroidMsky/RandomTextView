@@ -51,6 +51,7 @@ public class MainActivity extends Activity {
 //    start
     public void start3(View v) {
         mRandomTextView.setText("9078111.123");
+        mRandomTextView.pointAnim=false;
         mRandomTextView.setPianyilian(RandomTextView.FIRSTF_LAST);
         mRandomTextView.start();
 
@@ -58,6 +59,7 @@ public class MainActivity extends Activity {
 
     public void start4(View v) {
         mRandomTextView.setText("1231328.8");
+        mRandomTextView.pointAnim=true;
         mRandomTextView.setPianyilian(RandomTextView.FIRSTF_FIRST);
         mRandomTextView.start();
 

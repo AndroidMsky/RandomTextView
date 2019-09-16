@@ -54,6 +54,9 @@ public class RandomTextView extends TextView {
     //point index
     private int pointIndex = -1;
 
+    //小数点是否参与动画
+    public boolean pointAnim=false;
+
     //字体宽度
     private float f0;
     //小数点的宽度.
@@ -181,8 +184,12 @@ public class RandomTextView extends TextView {
 
 
                     } else {
+                        int pyl = 0;
+                        if (pointAnim) {
+                            pyl = pianyiliangSum[j];
+                        }
                         drawText(canvas, ".", getDrawX(j),
-                                i * baseline, p);
+                                i * baseline + pyl, p);
                     }
 
                 }
@@ -263,6 +270,7 @@ public class RandomTextView extends TextView {
 
 
     }
+
 
     private final Runnable task = new Runnable() {
 
