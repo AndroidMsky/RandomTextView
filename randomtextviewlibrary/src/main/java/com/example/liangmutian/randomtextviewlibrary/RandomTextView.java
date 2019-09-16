@@ -50,10 +50,14 @@ public class RandomTextView extends TextView {
     private boolean auto = true;
 
     //text int值列表
-    private ArrayList<Integer> arrayListText;
+    private ArrayList<Character> arrayListText;
+    //point index
+    private int pointIndex = -1;
 
     //字体宽度
     private float f0;
+    //小数点的宽度.
+    private float f0Point;
 
     //基准线
     private int baseline;
@@ -117,7 +121,7 @@ public class RandomTextView extends TextView {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        Log.d("RandomTextView","draw");
+        Log.d("RandomTextView", "draw");
         if (firstIn) {
             firstIn = false;
             super.onDraw(canvas);
@@ -129,12 +133,18 @@ public class RandomTextView extends TextView {
             float[] widths = new float[4];
             p.getTextWidths("9999", widths);
             f0 = widths[0];
+            f0Point = p.measureText(".");
             invalidate();
         }
         drawNumber(canvas);
 
     }
 
+
+    private int getDrawX(int j) {
+        if (j <= pointIndex || pointIndex == -1) return (int) (f0 * j);
+        else return (int) (f0 * (j - 1) + f0Point);
+    }
 
     //绘制
     private void drawNumber(Canvas canvas) {
@@ -158,25 +168,33 @@ public class RandomTextView extends TextView {
                         removeCallbacks(task);
                         //修复停止后绘制问题
                         if (this.auto)
-                        invalidate();
+                            invalidate();
                         this.auto = false;
                     }
 
                 }
-                if (overLine[j] == 0)
+                if (overLine[j] == 0) {
+                    Log.e("lmtlmt", setBack(arrayListText.get(j), maxLine - i - 1) + "");
+                    if (setBack(arrayListText.get(j), maxLine - i - 1) >= 0 && setBack(arrayListText.get(j), maxLine - i - 1) <= 9) {
+                        drawText(canvas, setBack(arrayListText.get(j), maxLine - i - 1) + "", getDrawX(j),
+                                i * baseline + pianyiliangSum[j], p);
 
-                    drawText(canvas, setBack(arrayListText.get(j), maxLine - i - 1) + "", 0 + f0 * j,
-                            i * baseline + pianyiliangSum[j], p);
 
-                    //canvas.drawText(setBack(arrayListText.get(j), maxLine - i - 1) + "", 0 + f0 * j,
-                    //        i * baseline + pianyiliangSum[j], p);
+                    } else {
+                        drawText(canvas, ".", getDrawX(j),
+                                i * baseline, p);
+                    }
+
+                }
+                //canvas.drawText(setBack(arrayListText.get(j), maxLine - i - 1) + "", 0 + f0 * j,
+                //        i * baseline + pianyiliangSum[j], p);
 
                 else {
                     //定位后画一次就好啦
                     if (overLine[j] == 1) {
                         overLine[j]++;
 
-                        drawText(canvas, arrayListText.get(j) + "", 0 + f0 * j,
+                        drawText(canvas, arrayListText.get(j) + "", getDrawX(j),
                                 baseline, p);
                         // canvas.drawText(arrayListText.get(j) + "", 0 + f0 * j,
                         //        baseline, p);
@@ -194,6 +212,11 @@ public class RandomTextView extends TextView {
 
     //设置上方数字0-9递减
     private int setBack(int c, int back) {
+        //如果不是0-9的数组直接返回本身的char
+        if (c < '0' || c > '9') {
+            return c;
+        }
+        c = c - '0';
 
         if (back == 0) return c;
 
@@ -223,24 +246,15 @@ public class RandomTextView extends TextView {
         this.maxLine = l;
     }
 
-    private ArrayList<Integer> getList(String s) {
-
-        ArrayList<Integer> arrayList = new ArrayList<Integer>();
-
+    private ArrayList<Character> getList(String s) {
+        ArrayList<Character> arrayList = new ArrayList<>();
         for (int i = 0; i < s.length(); i++) {
-
-            String ss = s.substring(i, i + 1);
-
-            int a = Integer.parseInt(ss);
-
-            arrayList.add(a);
+            Character c = s.charAt(i);
+            arrayList.add(c);
+            if (c == '.') pointIndex = i;
         }
         return arrayList;
-
     }
-
-
-
 
 
     public void destroy() {
@@ -255,7 +269,7 @@ public class RandomTextView extends TextView {
         public void run() {
             // TODO Auto-generated method stub
             if (auto) {
-                Log.d("RandomTextView",""+auto);
+                Log.d("RandomTextView", "" + auto);
                 postDelayed(this, 20);
 
                 for (int j = 0; j < numLength; j++) {

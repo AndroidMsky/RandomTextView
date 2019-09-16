@@ -50,14 +50,14 @@ public class MainActivity extends Activity {
 
 //    start
     public void start3(View v) {
-        mRandomTextView.setText("9078111123");
+        mRandomTextView.setText("9078111.123");
         mRandomTextView.setPianyilian(RandomTextView.FIRSTF_LAST);
         mRandomTextView.start();
 
     }
 
     public void start4(View v) {
-        mRandomTextView.setText("12313288");
+        mRandomTextView.setText("1231328.8");
         mRandomTextView.setPianyilian(RandomTextView.FIRSTF_FIRST);
         mRandomTextView.start();
 

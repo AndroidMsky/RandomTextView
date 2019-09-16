@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/button2"
         android:onClick="start3"
-        android:text="907811123(慢-快)"
+        android:text="907811.123(慢-快)"
         />
 
     <Button
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/button3"
         android:onClick="start4"
-        android:text="12313288(快-慢)"
+        android:text="1231328.8(快-慢)"
         />
 
     <TextView
