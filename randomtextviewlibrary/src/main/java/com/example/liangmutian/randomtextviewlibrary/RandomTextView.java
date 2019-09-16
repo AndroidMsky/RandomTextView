@@ -124,7 +124,7 @@ public class RandomTextView extends TextView {
             p = getPaint();
             Paint.FontMetricsInt fontMetrics = p.getFontMetricsInt();
             measuredHeight = getMeasuredHeight();
-            Log.d("EEEEEEE", "onDraw: " + measuredHeight);
+            Log.d("RandomTextView", "onDraw: " + measuredHeight);
             baseline = (measuredHeight - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
             float[] widths = new float[4];
             p.getTextWidths("9999", widths);
