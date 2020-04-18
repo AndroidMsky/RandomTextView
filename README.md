@@ -7,6 +7,9 @@ http://blog.csdn.net/androidmsky/article/details/53009886
 
 https://github.com/AndroidMsky/RandomTextView
 
+2020-4-18 
+优化动画性能，提升代码规范。已经合入master。
+
 2019-9-16
 增加了对小数点的支持 在分支V1.5-point。验证通过后会合入master
 
