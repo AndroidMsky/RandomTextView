@@ -10,55 +10,63 @@ import com.example.liangmutian.randomtextviewlibrary.RandomTextView;
 public class MainActivity extends Activity {
 
     private RandomTextView mRandomTextView;
-    private int[] velocityArray = new int[6];
+    private int[] speeds = new int[6];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mRandomTextView = (RandomTextView) findViewById(R.id.rtv);
-        velocityArray[0] = 10;
-        velocityArray[1] = 9;
-        velocityArray[2] = 8;
-        velocityArray[3] = 7;
-        velocityArray[4] = 6;
-        velocityArray[5] = 5;
-        mRandomTextView.setPianyilian(velocityArray);
+        speeds[0] = 10;
+        speeds[1] = 9;
+        speeds[2] = 8;
+        speeds[3] = 7;
+        speeds[4] = 6;
+        speeds[5] = 5;
+        mRandomTextView.setSpeeds(speeds);
         mRandomTextView.start();
     }
 
     public void start(View v) {
         mRandomTextView.setText("876543");
-        mRandomTextView.setPianyilian(RandomTextView.ALL);
+        mRandomTextView.setSpeeds(RandomTextView.ALL);
         mRandomTextView.start();
 
     }
 
     public void start2(View v) {
         mRandomTextView.setText("912111");
-        velocityArray[0] = 7;
-        velocityArray[1] = 6;
-        velocityArray[2] = 12;
-        velocityArray[3] = 8;
-        velocityArray[4] = 18;
-        velocityArray[5] = 10;
+        speeds[0] = 7;
+        speeds[1] = 6;
+        speeds[2] = 12;
+        speeds[3] = 8;
+        speeds[4] = 18;
+        speeds[5] = 10;
         mRandomTextView.setMaxLine(20);
-        mRandomTextView.setPianyilian(velocityArray);
+        mRandomTextView.setSpeeds(speeds);
         mRandomTextView.start();
 
     }
 
-//    start
     public void start3(View v) {
         mRandomTextView.setText("9078111123");
-        mRandomTextView.setPianyilian(RandomTextView.FIRSTF_LAST);
+        mRandomTextView.setSpeeds(RandomTextView.HIGH_FIRST);
         mRandomTextView.start();
 
     }
 
     public void start4(View v) {
-        mRandomTextView.setText("12313288");
-        mRandomTextView.setPianyilian(RandomTextView.FIRSTF_FIRST);
+        mRandomTextView.setText("1231328.8");
+        mRandomTextView.setPointAnimation(true);
+        mRandomTextView.setSpeeds(RandomTextView.LOW_FIRST);
+        mRandomTextView.start();
+
+    }
+
+    public void start5(View v) {
+        mRandomTextView.setText("1231328.8");
+        mRandomTextView.setPointAnimation(false);
+        mRandomTextView.setSpeeds(RandomTextView.LOW_FIRST);
         mRandomTextView.start();
 
     }
