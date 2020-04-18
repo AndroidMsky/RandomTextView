@@ -6,6 +6,10 @@ http://blog.csdn.net/androidmsky/article/details/53009886
 本文Github代码链接 
 
 https://github.com/AndroidMsky/RandomTextView
+
+2019-9-16
+增加了对小数点的支持 在分支V1.5-point。验证通过后会合入master
+
 2017年11-6号
 
 v1.4更新内容
