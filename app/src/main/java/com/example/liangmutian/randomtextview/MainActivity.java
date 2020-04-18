@@ -10,20 +10,20 @@ import com.example.liangmutian.randomtextviewlibrary.RandomTextView;
 public class MainActivity extends Activity {
 
     private RandomTextView mRandomTextView;
-    private int[] pianyiliang = new int[6];
+    private int[] velocityArray = new int[6];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mRandomTextView = (RandomTextView) findViewById(R.id.rtv);
-        pianyiliang[0] = 10;
-        pianyiliang[1] = 9;
-        pianyiliang[2] = 8;
-        pianyiliang[3] = 7;
-        pianyiliang[4] = 6;
-        pianyiliang[5] = 5;
-        mRandomTextView.setPianyilian(pianyiliang);
+        velocityArray[0] = 10;
+        velocityArray[1] = 9;
+        velocityArray[2] = 8;
+        velocityArray[3] = 7;
+        velocityArray[4] = 6;
+        velocityArray[5] = 5;
+        mRandomTextView.setPianyilian(velocityArray);
         mRandomTextView.start();
     }
 
@@ -36,14 +36,14 @@ public class MainActivity extends Activity {
 
     public void start2(View v) {
         mRandomTextView.setText("912111");
-        pianyiliang[0] = 7;
-        pianyiliang[1] = 6;
-        pianyiliang[2] = 12;
-        pianyiliang[3] = 8;
-        pianyiliang[4] = 18;
-        pianyiliang[5] = 10;
+        velocityArray[0] = 7;
+        velocityArray[1] = 6;
+        velocityArray[2] = 12;
+        velocityArray[3] = 8;
+        velocityArray[4] = 18;
+        velocityArray[5] = 10;
         mRandomTextView.setMaxLine(20);
-        mRandomTextView.setPianyilian(pianyiliang);
+        mRandomTextView.setPianyilian(velocityArray);
         mRandomTextView.start();
 
     }
